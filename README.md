@@ -75,39 +75,6 @@
 - **데스크톱**: 1024px ~ 1279px
 - **대형 데스크톱**: 1280px+
 
-## 🎯 사용 방법
-
-### 로컬에서 실행
-
-1. 프로젝트 폴더로 이동
-```bash
-cd /Users/ted/Documents/project_make/48knot_site/48knot_site
-```
-
-2. 브라우저에서 index.html 열기
-   - 파일을 더블 클릭하거나
-   - 브라우저 주소창에 파일 경로 입력
-   - 또는 Live Server 등의 로컬 서버 사용
-
-### 배포
-
-#### Netlify
-1. Netlify에 로그인
-2. "New site from Git" 또는 드래그 앤 드롭으로 폴더 업로드
-3. 빌드 설정 없이 바로 배포
-
-#### Vercel
-1. Vercel에 로그인
-2. "New Project" → 폴더 업로드
-3. 프레임워크는 "Other" 선택
-4. 배포
-
-#### GitHub Pages
-1. GitHub 저장소 생성
-2. 파일 업로드
-3. Settings → Pages → Source를 "main branch" 선택
-4. 배포 완료
-
 ## 🎨 커스터마이징
 
 ### 색상 변경
