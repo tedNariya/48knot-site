@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html class="dark" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>48KNOT 섹션 간격 최적화 버전</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // Updated to Electric Blue
+                        "primary": "#3B82F6", 
+                        "primary-hover": "#2563EB",
+                        "primary-soft": "rgba(59, 130, 246, 0.15)",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0B0E14",
+                        "surface-dark": "#151921",
+                        "surface-dark-border": "#232f48",
+                        // Updated to Cool Grey (Bright gray with blue tint)
+                        "text-secondary": "#E2E8F0", 
+                        "text-muted": "#94A3B8"
+                    },
+                    fontFamily: {
+                        "display": ['Inter', 'Noto Sans KR', 'sans-serif'],
+                        "body": ['Noto Sans KR', 'Inter', 'sans-serif'],
+                        "mono": ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(to bottom, rgba(11, 14, 20, 0.6), #0B0E14), url("assets/images/hero-bg.jpg")',
+                        'card-gradient': 'linear-gradient(145deg, rgba(21, 25, 33, 1) 0%, rgba(59, 130, 246, 0.05) 100%)',
+                    },
+                    animation: {
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+                            '50%': { opacity: '.8', transform: 'scale(1.1)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            word-break: keep-all;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-nav {
+            background: rgba(11, 14, 20, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.5);
+        }
+        .constellation-bg {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .connection-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .svg-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.2;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+        }
+        .icon-lg {
+            font-size: 28px;
+            line-height: 1;
+        }
+        .icon-md {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .nav-link.active {
+            color: #ffffff;
+        }
+        .nav-link.active::after {
+            content: "";
+            display: block;
+            height: 2px;
+            margin-top: 6px;
+            background: #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-text-secondary overflow-x-hidden antialiased selection:bg-primary selection:text-white relative">
+<div class="fixed inset-0 pointer-events-none z-0 constellation-bg"></div>
+<div class="fixed inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-white/5 to-transparent -translate-x-1/2 pointer-events-none z-0 hidden lg:block"></div>
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-surface-dark-border glass-nav transition-all duration-300">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<span class="material-symbols-outlined icon-lg">all_inclusive</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-white font-display">48KNOT</h1>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors" data-section="values" href="#values">가치</a>
+<a class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors" data-section="team" href="#team">팀</a>
+<a class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors" data-section="history" href="#history">히스토리</a>
+<a class="nav-link text-sm font-medium text-slate-300 hover:text-white transition-colors" data-section="service" href="#service">서비스</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="md:hidden text-white">
+<span class="material-symbols-outlined icon-md">menu</span>
+</button>
+<a class="hidden md:flex items-center justify-center px-5 py-2 rounded-full bg-primary/20 text-primary hover:bg-primary hover:text-white text-sm font-bold border border-primary/50 transition-all duration-300" href="#waitlist">
+                    문의하기
+                </a>
+</div>
+</div>
+</header>
+<main class="relative z-10">
+<section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+<div class="absolute inset-0 z-0 bg-hero-gradient bg-cover bg-center" data-alt="Abstract digital network connections with blue glowing nodes in dark space"></div>
+<svg class="svg-lines" xmlns="http://www.w3.org/2000/svg">
+<path d="M100,100 L300,300 M500,100 L700,400" fill="none" stroke="white" stroke-width="0.5"></path>
+<circle cx="100" cy="100" fill="white" opacity="0.5" r="2"></circle>
+<circle cx="300" cy="300" fill="white" opacity="0.5" r="2"></circle>
+<circle cx="500" cy="100" fill="white" opacity="0.5" r="2"></circle>
+<circle cx="700" cy="400" fill="white" opacity="0.5" r="2"></circle>
+</svg>
+<div class="relative z-10 container mx-auto px-6 text-center flex flex-col items-center gap-8">
+<div class="animate-fade-in-up flex flex-col items-center">
+<span class="inline-block py-1 px-3 rounded-full bg-surface-dark border border-surface-dark-border text-xs font-mono text-primary mb-8">EST. 2025</span>
+<h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-16 leading-tight max-w-5xl">
+                        사람과 사람을 잇는 48가지 매듭, Team 48knot
+                    </h1>
+<div class="text-lg md:text-xl font-light text-text-secondary mb-8 flex flex-col gap-2 md:gap-4 items-center max-w-4xl text-center leading-relaxed">
+<span>구속이 아닌 <span class="text-primary font-semibold">정렬(Align)</span>로 함께하고, 미안함 대신 <span class="text-primary font-semibold">고마움(Gratitude)</span>으로 연결됩니다.<br class="hidden md:block"/>우리는 서로의 빈 가슴에 열정을 채우는 IT 장인들입니다.</span>
+</div>
+</div>
+</div>
+</section>
+<section class="pt-16 pb-24 bg-background-dark/80 relative backdrop-blur-sm" id="values">
+<div class="container mx-auto px-6 max-w-6xl relative z-20">
+<div class="flex flex-col gap-4 mb-16 items-start md:items-center md:text-center">
+<h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight">핵심 가치</h2>
+<p class="text-text-secondary text-lg max-w-xl">지속 가능한 속도로 함께 걷는 연결의 미학</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="group bg-card-gradient border border-surface-dark-border p-8 rounded-xl hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
+<div class="size-12 rounded-lg bg-surface-dark border border-surface-dark-border flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined icon-lg">align_horizontal_center</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3">ALIGN</h3>
+<p class="text-text-secondary leading-relaxed font-light">
+                            구속하지 않고 나란히 걷습니다. 배려와 용기, 헌신을 통해 서로의 방향을 맞춥니다. 억지스러운 결합(Binding)이 아닌, 자발적인 정렬을 추구합니다.
+                        </p>
+<p class="text-sm text-primary/80 mt-4 font-medium">강요 없는 자율적 정렬</p>
+</div>
+<div class="group bg-card-gradient border border-surface-dark-border p-8 rounded-xl hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
+<div class="size-12 rounded-lg bg-surface-dark border border-surface-dark-border flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined icon-lg">bolt</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3">POTENTIAL</h3>
+<p class="text-text-secondary leading-relaxed font-light">
+                            빈 공간을 가능성으로 채웁니다. 공허함(Void)이 아닌 잠재력으로 서로의 채워줍니다. 각자의 전문성이 만나 폭발적인 시너지를 냅니다.
+                        </p>
+<p class="text-sm text-primary/80 mt-4 font-medium">지속 가능한 성장의 가능성</p>
+</div>
+<div class="group bg-card-gradient border border-surface-dark-border p-8 rounded-xl hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
+<div class="size-12 rounded-lg bg-surface-dark border border-surface-dark-border flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined icon-lg">favorite</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3">GRATITUDE</h3>
+<p class="text-text-secondary leading-relaxed font-light">
+                            계산할 수 없는 가치를 나눕니다. 후회(Regret) 대신 존중과 감사를 남깁니다. 내가 모르는 영역의 가치를 인정하며 진정한 연결을 완성합니다.
+                        </p>
+<p class="text-sm text-primary/80 mt-4 font-medium">의무가 아닌 감사함으로</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 bg-surface-dark/90 border-y border-surface-dark-border relative" id="team">
+<div class="container mx-auto px-6 max-w-6xl relative z-20">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+<div>
+<h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">Reunited Experts</h2>
+<p class="text-text-secondary text-lg">카카오와 싸이월드, 격동의 모바일 시대를 이끌었던 베테랑들이 48knot에서 다시 뭉쳤습니다.</p>
+</div>
+<a class="text-primary font-bold hover:text-white transition-colors flex items-center gap-1 group" href="#">
+                        전체 멤버 보기
+                        <span class="material-symbols-outlined icon-md group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<div class="flex flex-col lg:flex-row items-center justify-center gap-0 lg:gap-0 relative">
+<div class="w-full lg:w-[48%] bg-background-dark border border-surface-dark-border rounded-2xl p-8 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 hover:border-primary/30 z-10">
+<div class="flex items-start gap-6">
+<div class="w-16 h-16 rounded-full bg-cover bg-center shrink-0 border-2 border-primary/20" data-alt="Portrait of Gregory" style='background-image: url("assets/images/team-gregory.jpg");'></div>
+<div class="flex flex-col">
+<div class="mb-2">
+<span class="text-xs font-bold text-primary tracking-wider uppercase">CTO / Software Architect</span>
+<h3 class="text-2xl font-bold text-white mt-1">Gregory (노재현)</h3>
+</div>
+<div class="mt-2 mb-4 text-text-secondary text-sm leading-relaxed">
+                                    카카오톡·카카오스토리 초기 개발 주역. 25년의 내공으로 시스템의 뼈대를 세우는 대기만성형 리더.
+                                </div>
+<div class="flex flex-wrap gap-2 mt-auto">
+<span class="px-2.5 py-1 rounded bg-surface-dark border border-surface-dark-border text-xs text-text-secondary">#Kakao 12년 (App팀장)</span>
+<span class="px-2.5 py-1 rounded bg-surface-dark border border-surface-dark-border text-xs text-text-secondary">#24k 해커톤 의장상</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative z-20 -my-4 lg:my-0 lg:-mx-4 flex items-center justify-center">
+<div class="size-12 rounded-full bg-surface-dark border-2 border-primary/30 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.3)] bg-gradient-to-br from-surface-dark to-slate-900">
+<span class="material-symbols-outlined icon-md text-primary font-bold">add</span>
+</div>
+<div class="hidden lg:block absolute left-full top-1/2 w-4 h-0.5 bg-primary/30 -translate-y-1/2"></div>
+<div class="hidden lg:block absolute right-full top-1/2 w-4 h-0.5 bg-primary/30 -translate-y-1/2"></div>
+<div class="lg:hidden absolute bottom-full left-1/2 w-0.5 h-4 bg-primary/30 -translate-x-1/2"></div>
+<div class="lg:hidden absolute top-full left-1/2 w-0.5 h-4 bg-primary/30 -translate-x-1/2"></div>
+</div>
+<div class="w-full lg:w-[48%] bg-background-dark border border-surface-dark-border rounded-2xl p-8 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 hover:border-primary/30 z-10">
+<div class="flex items-start gap-6">
+<div class="w-16 h-16 rounded-full bg-cover bg-center shrink-0 border-2 border-primary/20" data-alt="Portrait of Ted" style='background-image: url("assets/images/team-ted.jpg");'></div>
+<div class="flex flex-col">
+<div class="mb-2">
+<span class="text-xs font-bold text-primary tracking-wider uppercase">CSO / Service Planner</span>
+<h3 class="text-2xl font-bold text-white mt-1">Ted (황지원)</h3>
+</div>
+<div class="mt-2 mb-4 text-text-secondary text-sm leading-relaxed">
+                                    싸이월드 전성기를 함께한 23년 차 기획 장인. 사람을 이해하는 기술을 설계하는 전략가.
+                                </div>
+<div class="flex flex-wrap gap-2 mt-auto">
+<span class="px-2.5 py-1 rounded bg-surface-dark border border-surface-dark-border text-xs text-text-secondary">#Cyworld (PM/기획)</span>
+<span class="px-2.5 py-1 rounded bg-surface-dark border border-surface-dark-border text-xs text-text-secondary">#서비스기획 23년</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 bg-background-dark/90 relative overflow-hidden" id="history">
+<div class="absolute top-1/2 right-0 -translate-y-1/2 w-1/3 h-full bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="container mx-auto px-6 max-w-4xl relative z-10">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">Our Journey @ 88.9km/h</h2>
+<p class="text-text-secondary text-lg">속도보다 방향, 정점보다 지속 가능한 성장을 향해 나아갑니다.</p>
+</div>
+<div class="relative pl-6">
+<div class="absolute left-[3.25rem] top-4 bottom-10 w-px bg-surface-dark-border"></div>
+<div class="relative flex items-start gap-8 mb-6 group">
+<div class="relative z-10 flex items-center justify-center size-14 shrink-0">
+<div class="size-14 bg-background-dark rounded-full flex items-center justify-center border-4 border-surface-dark group-hover:border-slate-700 transition-colors">
+<div class="size-7 bg-slate-800 rounded-full flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined icon-md">check</span>
+</div>
+</div>
+</div>
+<div class="pt-1">
+<span class="inline-block py-0.5 px-2 rounded bg-surface-dark text-xs font-mono text-text-muted mb-1">2025.08</span>
+<h3 class="text-lg font-bold text-white">팀 결성 (The Beginning)</h3>
+</div>
+</div>
+<div class="relative flex items-start gap-8 mb-6 group">
+<div class="relative z-10 flex items-center justify-center size-14 shrink-0">
+<div class="size-14 bg-background-dark rounded-full flex items-center justify-center border-4 border-surface-dark group-hover:border-slate-700 transition-colors">
+<div class="size-7 bg-slate-800 rounded-full flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined icon-md">check</span>
+</div>
+</div>
+</div>
+<div class="pt-1">
+<span class="inline-block py-0.5 px-2 rounded bg-surface-dark text-xs font-mono text-text-muted mb-1">2025.10</span>
+<h3 class="text-lg font-bold text-white">Project 셋놓(500GO) 기획 착수</h3>
+</div>
+</div>
+<div class="relative flex items-start gap-8 mb-6 group">
+<div class="relative z-10 flex items-center justify-center size-14 shrink-0">
+<div class="size-14 bg-background-dark rounded-full flex items-center justify-center border-4 border-surface-dark group-hover:border-slate-700 transition-colors">
+<div class="size-7 bg-slate-800 rounded-full flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined icon-md">check</span>
+</div>
+</div>
+</div>
+<div class="pt-1">
+<span class="inline-block py-0.5 px-2 rounded bg-surface-dark text-xs font-mono text-text-muted mb-1">2025.12</span>
+<h3 class="text-lg font-bold text-white">Cloud Infrastructure 구축 완료</h3>
+</div>
+</div>
+<div class="relative flex items-start gap-8 mb-8 group">
+<div class="relative z-10 flex items-center justify-center size-16 shrink-0 -ml-1">
+<div class="absolute inset-0 rounded-full bg-primary/20 animate-ping"></div>
+<div class="absolute inset-0 rounded-full bg-primary/10 animate-pulse-glow"></div>
+<div class="relative size-16 bg-background-dark rounded-full flex items-center justify-center border-4 border-primary shadow-[0_0_35px_rgba(59,130,246,0.8)] ring-2 ring-primary/30">
+<div class="size-8 bg-primary rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined icon-md animate-pulse">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="pt-2">
+<span class="inline-block py-1 px-2 rounded bg-primary text-white text-xs font-mono font-bold mb-2 shadow-lg shadow-primary/40 ring-1 ring-white/20">2026.01 [Now]</span>
+<h3 class="text-xl font-bold text-white mb-1 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">풀타임 체제 전환 &amp; SaaS 고도화</h3>
+</div>
+</div>
+<div class="relative flex items-start gap-8 group opacity-40">
+<div class="relative z-10 flex items-center justify-center size-14 shrink-0">
+<div class="size-14 bg-background-dark rounded-full flex items-center justify-center border-4 border-dashed border-surface-dark-border">
+<div class="size-7 bg-surface-dark rounded-full flex items-center justify-center text-text-muted">
+<span class="material-symbols-outlined icon-md">rocket_launch</span>
+</div>
+</div>
+</div>
+<div class="pt-1">
+<span class="inline-block py-0.5 px-2 rounded bg-surface-dark text-xs font-mono text-text-muted mb-2">FUTURE</span>
+<h3 class="text-lg font-bold text-white mb-1">예비창업패키지 도전 (Target: Safe Speed)</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 bg-surface-dark/95 relative" id="service">
+<div class="container mx-auto px-6 max-w-6xl relative z-20">
+<div class="flex flex-col items-center text-center gap-4 mb-16">
+<span class="text-primary font-bold tracking-wider text-sm uppercase">서비스 소개</span>
+<h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight">The 48 Knots</h2>
+<p class="text-text-secondary text-lg max-w-2xl">고립된 개인을 존중받는 인격으로 연결하는 솔루션</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-background-dark p-8 rounded-2xl border border-surface-dark-border hover:border-primary/50 transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-14 h-14 rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-white border border-slate-700 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined icon-lg">groups</span>
+</div>
+<span class="text-xs font-bold text-text-muted bg-surface-dark px-2 py-1 rounded border border-surface-dark-border">Club SaaS</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3">첫놓 : 운영 문제부터 해결하기</h3>
+<p class="text-text-secondary text-sm leading-relaxed font-light">
+                            권한 없는 책임에서 해방되세요. 투명한 회계와 스마트한 행사 관리로 운영진과 회원 모두가 행복해집니다.
+                        </p>
+</div>
+<div class="bg-background-dark p-8 rounded-2xl border border-surface-dark-border hover:border-primary/50 transition-colors group relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-150 duration-500"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div class="w-14 h-14 rounded-lg bg-gradient-to-br from-primary to-blue-700 flex items-center justify-center text-white shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined icon-lg">credit_card</span>
+</div>
+<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">Card Section</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3 relative z-10">둘놓 : 모임을 하나로 연결하기</h3>
+<p class="text-text-secondary text-sm leading-relaxed relative z-10 font-light">
+                            다수의 스마트폰을 연결하여 만드는 인간 전광판. 따로 또 같이, 당신의 메시지를 빛내보세요.
+                        </p>
+</div>
+<div class="bg-background-dark p-8 rounded-2xl border border-surface-dark-border hover:border-primary/50 transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-14 h-14 rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-white border border-slate-700 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined icon-lg">rocket</span>
+</div>
+<span class="text-xs font-bold text-text-muted bg-surface-dark px-2 py-1 rounded border border-surface-dark-border">500GO</span>
+</div>
+<h3 class="text-xl font-bold text-white mb-3">셋놓 : 지금, 여기서 모이기</h3>
+<p class="text-text-secondary text-sm leading-relaxed font-light">
+                            오프라인 경험을 잇는 가장 확실한 약속. 공간 주인장과 방문객을 신뢰로 연결합니다. (Coming Soon)
+                        </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-background-dark border-t border-surface-dark-border pt-16 pb-8 relative z-20">
+<div class="container mx-auto px-6 max-w-7xl">
+<div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+<div class="max-w-sm">
+<div class="flex items-center gap-2 mb-6 text-white">
+<span class="material-symbols-outlined icon-md text-primary">all_inclusive</span>
+<span class="font-bold text-xl">48KNOT</span>
+</div>
+<p class="text-lg font-display font-bold text-slate-300 mb-4 leading-relaxed break-keep">
+                        "우리는 90km/h를 넘기지 않습니다. 지속 가능한 88.9km/h를 꿈꿉니다."
+                    </p>
+</div>
+<div class="grid grid-cols-2 gap-12">
+<div>
+<h4 class="text-white font-bold mb-4">서비스</h4>
+<ul class="space-y-3 text-sm text-text-muted">
+<li><a class="hover:text-primary transition-colors" href="#">Club SaaS</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Card Section</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">500GO</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold mb-4">연락처</h4>
+<ul class="space-y-3 text-sm text-text-muted">
+<li><a class="hover:text-primary transition-colors" href="mailto:support@48knot.com">support@48knot.com</a></li>
+<li class="text-text-muted">대표: 노재현</li>
+<li class="text-text-muted">오피스: 서울특별시 종로구</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="border-t border-surface-dark-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+<p>© 2025 48KNOT Inc. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-slate-400" href="#">개인정보처리방침</a>
+<a class="hover:text-slate-400" href="#">이용약관</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        const navLinks = Array.from(document.querySelectorAll(".nav-link"));
+        const sectionMap = new Map(
+            navLinks.map((link) => [link.dataset.section, link])
+        );
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    const activeLink = sectionMap.get(entry.target.id);
+                    if (!activeLink) return;
+                    navLinks.forEach((link) => link.classList.remove("active"));
+                    activeLink.classList.add("active");
+                });
+            },
+            {
+                rootMargin: "-30% 0px -60% 0px",
+                threshold: 0.1,
+            }
+        );
+
+        ["values", "team", "history", "service"].forEach((id) => {
+            const section = document.getElementById(id);
+            if (section) observer.observe(section);
+        });
+    </script>
+</body></html>
