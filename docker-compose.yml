@@ -1,0 +1,65 @@
+name: 48knot-company-site
+
+services:
+  traefik:
+    profiles: ["all", "dev", "prod", "bulk"]
+    image: traefik:v3.6
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --api=true
+      - --api.dashboard=true
+      - --entrypoints.web.address=:4803
+    ports:
+      - "4803:4803"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`traefik.48knot.localhost`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.service=api@internal
+    restart: unless-stopped
+
+  dev:
+    profiles: ["all", "dev"]
+    build:
+      context: .
+      target: base
+    ports:
+      - "4881:4803"
+    volumes:
+      - ./httpd:/usr/share/nginx/html:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dev.rule=Host(`dev.48knot.localhost`)
+      - traefik.http.services.dev.loadbalancer.server.port=4803
+    restart: unless-stopped
+
+  prod:
+    profiles: ["all", "prod"]
+    build:
+      context: .
+      target: production
+    ports:
+      - "4882:4803"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.prod.rule=Host(`prod.48knot.localhost`)
+      - traefik.http.routers.prod.entrypoints=web
+      - traefik.http.services.prod.loadbalancer.server.port=4803
+    restart: unless-stopped
+
+  bulk_test:
+    profiles: ["all", "bulk"]
+    build:
+      context: .
+      target: bulk_test
+    ports:
+      - "4883:4803"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bulk.rule=Host(`bulk.48knot.localhost`)
+      - traefik.http.routers.bulk.entrypoints=web
+      - traefik.http.services.bulk.loadbalancer.server.port=4803
+    restart: unless-stopped
