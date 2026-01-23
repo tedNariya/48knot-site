@@ -21,6 +21,7 @@ RUN chmod -R 755 /usr/share/nginx/html \
 # -----------------------------
 FROM base AS production
 COPY httpd/index.html /usr/share/nginx/html/index.html
+COPY httpd/500go.html /usr/share/nginx/html/500go.html
 COPY httpd/assets/images /usr/share/nginx/html/assets/images
 RUN chmod -R 755 /usr/share/nginx/html \
   && TZ=Asia/Seoul sh -c 'printf "production\n%s\n" "$(date +\"%Y-%m-%dT%H:%M:%S%z\")" > /usr/share/nginx/html/_target.html'
