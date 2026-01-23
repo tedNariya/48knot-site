@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="dark" lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>48KNOT | 500go - 핫플 모임</title>
+<meta name="description" content="오늘, 딱 40분. AI가 설계하는 핫플 모임 500go.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="48KNOT | 500go - 핫플 모임">
+<meta property="og:description" content="오늘, 딱 40분. AI가 설계하고 시스템이 통제하는 가장 깔끔한 오프라인 세션">
+<meta property="og:image" content="assets/images/48knot_hero_bg.jpg">
+<meta property="og:url" content="https://48knot.com/500go.html">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="48KNOT | 500go - 핫플 모임">
+<meta property="twitter:description" content="오늘, 딱 40분. AI가 설계하고 시스템이 통제하는 가장 깔끔한 오프라인 세션">
+<meta property="twitter:image" content="assets/images/48knot_hero_bg.jpg">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>">
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+    darkMode: "class",
+    theme: {
+        extend: {
+            colors: {
+                "primary": "#3B82F6",
+                "primary-hover": "#2563EB",
+                "primary-soft": "rgba(59, 130, 246, 0.15)",
+                "background-light": "#f6f6f8",
+                "background-dark": "#0B0E14",
+                "surface-dark": "#151921",
+                "surface-dark-border": "#232f48",
+                "text-secondary": "#E2E8F0",
+                "text-muted": "#94A3B8"
+            },
+            fontFamily: {
+                "display": ['Noto Sans KR', 'Inter', 'sans-serif'],
+                "body": ['Noto Sans KR', 'Inter', 'sans-serif'],
+                "mono": ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+            },
+            backgroundImage: {
+                'hero-500go': 'linear-gradient(to bottom, rgba(11, 14, 20, 0.65), #0B0E14), url("assets/images/hero-bg.jpg")',
+                'card-gradient': 'linear-gradient(145deg, rgba(21, 25, 33, 1) 0%, rgba(59, 130, 246, 0.05) 100%)',
+                'spotlight': 'radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.2), transparent 55%)',
+            },
+            animation: {
+                'fade-in-up': 'fade-in-up 0.8s ease-out',
+                'fade-in': 'fade-in 0.6s ease-out',
+            },
+            keyframes: {
+                'fade-in-up': {
+                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                'fade-in': {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                }
+            }
+        },
+    },
+}
+</script>
+<style>
+body {
+    font-family: 'Noto Sans KR', 'Inter', sans-serif;
+    word-break: keep-all;
+}
+html {
+    scroll-behavior: smooth;
+}
+.constellation-bg {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.12) 1px, transparent 0);
+    background-size: 36px 36px;
+}
+.glass-card {
+    background: rgba(21, 25, 33, 0.72);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(35, 47, 72, 0.8);
+}
+.timer-glow {
+    text-shadow: 0 0 24px rgba(59, 130, 246, 0.65), 0 0 12px rgba(255, 255, 255, 0.15);
+}
+.way-layout {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: center;
+}
+@media (min-width: 768px) {
+    .way-layout { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .way-step-1 { transform: translateX(14px); }
+    .way-step-3 { transform: translateX(-14px); }
+    .way-step-2 { transform: scale(1.08); z-index: 10; }
+}
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+</head>
+<body class="bg-background-dark text-text-secondary overflow-x-hidden antialiased relative">
+
+<div class="fixed inset-0 pointer-events-none z-0 constellation-bg"></div>
+
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-surface-dark-border bg-background-dark/95 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a class="flex items-center gap-3" href="index.html">
+            <div class="size-8 text-primary">
+                <span class="material-symbols-outlined !text-3xl">all_inclusive</span>
+            </div>
+            <span class="text-xl font-bold tracking-tight text-white font-display">48KNOT</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8 text-sm text-slate-300">
+            <a class="hover:text-white transition-colors" href="#problem">문제</a>
+            <a class="hover:text-white transition-colors" href="#process">프로세스</a>
+            <a class="hover:text-white transition-colors" href="#compare">비교</a>
+            <a class="hover:text-white transition-colors" href="#partner">파트너</a>
+        </nav>
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2 hover:bg-surface-dark rounded-lg transition-colors" aria-label="메뉴 열기">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <a class="hidden md:flex items-center justify-center px-5 py-2.5 rounded-full bg-primary text-white hover:bg-primary-hover text-sm font-bold transition-all duration-300 shadow-lg shadow-primary/20" href="mailto:support@48knot.com?subject=500go 문의">
+                문의하기
+            </a>
+        </div>
+    </div>
+</header>
+
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+<div id="mobile-menu" class="fixed top-0 right-0 bottom-0 w-full sm:w-80 bg-surface-dark border-l border-surface-dark-border z-50 translate-x-full transition-transform md:hidden">
+    <div class="flex flex-col h-full">
+        <div class="flex items-center justify-between p-6 border-b border-surface-dark-border">
+            <div class="flex items-center gap-2 text-white">
+                <span class="material-symbols-outlined text-primary">all_inclusive</span>
+                <span class="font-bold">48KNOT</span>
+            </div>
+            <button id="mobile-menu-close" class="text-white p-2 hover:bg-background-dark rounded-lg transition-colors" aria-label="메뉴 닫기">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="flex flex-col p-6 gap-2">
+            <a class="text-base font-medium text-slate-300 hover:text-white hover:bg-background-dark px-4 py-3 rounded-lg transition-colors" href="#problem">문제</a>
+            <a class="text-base font-medium text-slate-300 hover:text-white hover:bg-background-dark px-4 py-3 rounded-lg transition-colors" href="#process">프로세스</a>
+            <a class="text-base font-medium text-slate-300 hover:text-white hover:bg-background-dark px-4 py-3 rounded-lg transition-colors" href="#compare">비교</a>
+            <a class="text-base font-medium text-slate-300 hover:text-white hover:bg-background-dark px-4 py-3 rounded-lg transition-colors" href="#partner">파트너</a>
+        </nav>
+        <div class="mt-auto p-6 border-t border-surface-dark-border">
+            <a class="flex items-center justify-center w-full px-5 py-3 rounded-full bg-primary text-white hover:bg-primary-hover text-sm font-bold transition-all duration-300" href="mailto:support@48knot.com?subject=500go 문의">
+                문의하기
+            </a>
+        </div>
+    </div>
+</div>
+
+<main class="pt-20 relative z-10">
+    <section class="bg-hero-500go bg-cover bg-center py-28 md:py-40">
+        <div class="container mx-auto px-6 max-w-5xl text-center flex flex-col items-center gap-10">
+            <div class="flex flex-col gap-6">
+                <span class="text-primary font-bold tracking-[0.3em] text-xs uppercase">HOTPLACE SESSION</span>
+                <h1 class="text-4xl md:text-6xl font-black text-white leading-[1.15]">
+                    오늘, 딱 40분.<br/>핫플 모임 500go
+                </h1>
+                <p class="text-text-secondary text-lg md:text-xl">
+                    AI가 설계하고 시스템이 통제하는 가장 깔끔한 오프라인 세션
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <a class="px-7 py-3 rounded-full bg-primary text-white font-bold shadow-lg shadow-primary/30 hover:bg-primary-hover transition-colors" href="mailto:support@48knot.com?subject=500go 알림 신청">
+                    사전 알림 신청
+                </a>
+                <a class="px-7 py-3 rounded-full bg-surface-dark border border-surface-dark-border text-white font-semibold hover:border-primary/40 transition-colors" href="#process">
+                    500go의 방식 보기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 md:py-24 bg-spotlight scroll-reveal" id="problem">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="text-center flex flex-col gap-4 mb-14">
+                <h2 class="text-white text-3xl md:text-4xl font-black">이런 순간, 익숙하지 않나요?</h2>
+                <p class="text-text-secondary text-lg">새로운 경험을 원하지만, 번거로운 모임 방식은 부담스럽습니다.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-6 flex flex-col gap-4">
+                    <div class="w-full h-48 rounded-xl bg-cover bg-center" style="background-image: url('assets/images/500go-moment-1.svg')"></div>
+                    <p class="font-semibold text-center text-white">혼자 가긴 애매한 순간</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6 flex flex-col gap-4">
+                    <div class="w-full h-48 rounded-xl bg-cover bg-center" style="background-image: url('assets/images/500go-moment-2.svg')"></div>
+                    <p class="font-semibold text-center text-white">새로운 자극이 필요한 오후</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6 flex flex-col gap-4">
+                    <div class="w-full h-48 rounded-xl bg-cover bg-center" style="background-image: url('assets/images/500go-moment-3.svg')"></div>
+                    <p class="font-semibold text-center text-white">복잡한 약속은 피하고 싶을 때</p>
+                </div>
+            </div>
+            <div class="mt-14 p-10 rounded-2xl border border-primary/30 bg-primary/10 text-center">
+                <p class="text-2xl md:text-3xl font-bold text-white italic">"문제는 사람이 아니라, 형식이었습니다."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 md:py-28 relative overflow-hidden scroll-reveal" id="process">
+        <div class="absolute -right-10 -top-10 w-80 h-80 bg-primary/10 blur-[120px]"></div>
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="flex flex-col gap-20">
+                <div class="flex flex-col gap-4 items-center text-center">
+                    <h2 class="text-white text-3xl md:text-5xl font-black">500go's Way</h2>
+                    <p class="text-primary text-lg font-medium">AI가 설계하고 시스템이 통제하는 깔끔한 프로세스</p>
+                </div>
+                <div class="way-layout max-w-5xl mx-auto w-full">
+                    <div class="way-step-1 flex flex-col items-center gap-6">
+                        <div class="size-24 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary transition-all duration-500">
+                            <span class="material-symbols-outlined text-5xl">smart_toy</span>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="text-xl font-bold mb-2 text-white">01. Design</h4>
+                            <p class="text-text-secondary text-sm">실시간 위치와 취향 분석</p>
+                        </div>
+                    </div>
+                    <div class="way-step-2 flex flex-col items-center gap-6">
+                        <div class="size-28 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary transition-all duration-500">
+                            <span class="material-symbols-outlined text-5xl">groups</span>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="text-xl font-bold mb-2 text-white">02. Configure</h4>
+                            <p class="text-text-secondary text-sm">비슷한 취향 참여자 구성</p>
+                        </div>
+                    </div>
+                    <div class="way-step-3 flex flex-col items-center gap-6">
+                        <div class="size-32 rounded-full bg-primary border-4 border-primary/40 flex items-center justify-center text-white shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-all duration-500">
+                            <span class="material-symbols-outlined text-6xl">timer_off</span>
+                        </div>
+                        <div class="text-center">
+                            <h4 class="text-2xl font-black text-primary mb-2">03. Clean End</h4>
+                            <p class="text-white text-base font-bold">40분 타이머 종료와 함께 세션이 마무리됩니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 md:py-24 bg-surface-dark/80 scroll-reveal" id="compare">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="flex flex-col gap-10">
+                <h2 class="text-white text-3xl font-black text-center">기존 모임 vs 500go</h2>
+                <div class="overflow-hidden rounded-2xl border border-surface-dark-border bg-background-dark shadow-2xl">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-surface-dark">
+                                <th class="p-6 text-text-muted font-bold uppercase text-xs tracking-wider border-b border-surface-dark-border">구분</th>
+                                <th class="p-6 text-text-muted font-bold uppercase text-xs tracking-wider border-b border-surface-dark-border">기존 소셜 모임</th>
+                                <th class="p-6 text-primary font-black uppercase text-xs tracking-wider border-b border-surface-dark-border bg-primary/10">500go</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-dark-border">
+                            <tr>
+                                <td class="p-6 font-bold text-sm text-white">중심 가치</td>
+                                <td class="p-6 text-text-muted text-sm">❌ 관계/연락처 중심</td>
+                                <td class="p-6 text-white text-sm bg-primary/10 font-bold">⭕ 경험 중심</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6 font-bold text-sm text-white">시간 관리</td>
+                                <td class="p-6 text-text-muted text-sm">❌ 종료 시점 불명확</td>
+                                <td class="p-6 text-white text-sm bg-primary/10 font-bold">⭕ 40분 타임박스</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6 font-bold text-sm text-white">운영 방식</td>
+                                <td class="p-6 text-text-muted text-sm">❌ 호스트 역량 의존</td>
+                                <td class="p-6 text-white text-sm bg-primary/10 font-bold">⭕ AI 시스템 설계</td>
+                            </tr>
+                            <tr>
+                                <td class="p-6 font-bold text-sm text-white">사후 관계</td>
+                                <td class="p-6 text-text-muted text-sm">❌ 지속적 연락 발생</td>
+                                <td class="p-6 text-white text-sm bg-primary/10 font-bold">⭕ 종료 후 즉시 해산</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 md:py-28 text-center bg-background-dark scroll-reveal">
+        <div class="container mx-auto px-6 max-w-3xl flex flex-col gap-12">
+            <div class="flex flex-col gap-6">
+                <h2 class="text-4xl md:text-6xl font-black tracking-tight text-white">오늘, 딱 40분. 500go</h2>
+                <p class="text-primary text-xl md:text-2xl font-medium">지금 당신만을 위한 세션이 열리고 있습니다.</p>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-8">
+                <div class="bg-black/40 backdrop-blur-xl border border-primary/50 rounded-[2rem] px-12 py-8 shadow-[0_0_70px_rgba(59,130,246,0.35)] inline-block">
+                    <div class="flex items-center gap-5 font-mono text-7xl md:text-[9rem] font-bold tracking-tighter timer-glow text-primary">
+                        <span>40</span>
+                        <span class="text-white/60">:</span>
+                        <span>00</span>
+                    </div>
+                    <p class="text-primary/70 font-mono text-xs tracking-[0.5em] mt-6 uppercase font-black">Active Session Timer</p>
+                </div>
+                <a class="bg-primary hover:bg-primary-hover text-white font-black py-5 px-12 rounded-2xl text-lg transition-all shadow-[0_10px_40px_rgba(59,130,246,0.4)] hover:scale-105 active:scale-95" href="mailto:support@48knot.com?subject=500go 참여 문의">
+                    지금 시작하기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full bg-surface-dark border-y border-surface-dark-border scroll-reveal" id="partner">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 py-8 gap-8">
+            <div class="flex-1 flex flex-col">
+                <span class="text-primary font-black text-[10px] tracking-[0.25em] uppercase">For Business Partners</span>
+                <h2 class="text-2xl md:text-3xl font-black leading-tight text-white mt-2 mb-3">검증된 유저를 실제 방문으로 연결합니다.</h2>
+                <p class="text-text-secondary text-sm md:text-base leading-snug max-w-2xl">
+                    카페, 바, 갤러리 등 유휴 공간을 500go의 세션 플레이스로 만드세요. AI가 타겟 고객을 당신의 매장으로 정확히 안내합니다.
+                </p>
+            </div>
+            <div class="flex-shrink-0">
+                <a class="bg-white text-background-dark hover:bg-primary hover:text-white font-black py-3 px-8 rounded-xl transition-all text-sm shadow-lg whitespace-nowrap" href="mailto:support@48knot.com?subject=500go 파트너 제휴">
+                    파트너 제휴 문의하기
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-background-dark border-t border-surface-dark-border pt-10 pb-8 relative z-10">
+    <div class="container mx-auto px-6 max-w-6xl">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-8 text-sm text-text-muted mb-8">
+            <div class="flex flex-col gap-3">
+                <div class="flex items-center gap-2 text-white">
+                    <span class="material-symbols-outlined text-primary">all_inclusive</span>
+                    <span class="font-bold text-lg">48KNOT</span>
+                </div>
+                <p>AI-Driven Offline Experience Platform.</p>
+            </div>
+            <div class="flex gap-6">
+                <a class="hover:text-primary transition-colors" href="index.html">홈으로</a>
+                <a class="hover:text-primary transition-colors" href="mailto:support@48knot.com">문의</a>
+            </div>
+        </div>
+        <div class="border-t border-surface-dark-border pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+            <p>© 2025 48KNOT Inc. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a class="hover:text-slate-400" href="#">개인정보처리방침</a>
+                <a class="hover:text-slate-400" href="#">이용약관</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+// Mobile Menu Toggle
+const menu = document.getElementById('mobile-menu');
+const menuBtn = document.getElementById('mobile-menu-btn');
+const menuClose = document.getElementById('mobile-menu-close');
+const menuOverlay = document.getElementById('mobile-menu-overlay');
+
+function closeMenu() {
+    menu.classList.add('translate-x-full');
+    menuOverlay.style.opacity = '0';
+    menuOverlay.style.pointerEvents = 'none';
+    document.body.style.overflow = '';
+}
+
+function openMenu() {
+    menu.classList.remove('translate-x-full');
+    menuOverlay.style.opacity = '1';
+    menuOverlay.style.pointerEvents = 'auto';
+    document.body.style.overflow = 'hidden';
+}
+
+menuBtn.addEventListener('click', openMenu);
+menuClose.addEventListener('click', closeMenu);
+menuOverlay.addEventListener('click', closeMenu);
+menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+
+// Scroll Reveal Animation
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.scroll-reveal').forEach(el => {
+    observer.observe(el);
+});
+</script>
+
+</body>
+</html>
